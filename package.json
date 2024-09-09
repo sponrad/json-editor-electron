@@ -2,12 +2,12 @@
   "name": "json-editor-electron",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "main": "./out/main/main.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "electron-vite dev -w",
+    "build": "electron-vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "electron-vite preview"
   },
   "dependencies": {
     "react": "^18.3.1",
