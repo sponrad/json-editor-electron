@@ -2,7 +2,7 @@
 const electron = require("electron");
 let mainWindow;
 function createWindow() {
-  mainWindow = new electron.BrowserWindow({});
+  mainWindow = new electron.BrowserWindow({ width: 1280, height: 960 });
   mainWindow.loadURL("http://localhost:5173");
   mainWindow.on("closed", () => mainWindow = null);
 }
