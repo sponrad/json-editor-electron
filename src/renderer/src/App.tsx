@@ -5,6 +5,7 @@ import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs } from '@mui/
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
+import JsonView from '@uiw/react-json-view';
 
 const darkTheme = createTheme({
   palette: {
@@ -69,7 +70,7 @@ const App = () => {
           </Box>
 
           <CustomTabPanel value={tab} index={ViewTab.Schema}>
-            {JSON.stringify(numbersAndWidgets)}
+            <JsonView value={numbersAndWidgets} />
           </CustomTabPanel>
           <CustomTabPanel value={tab} index={ViewTab.Form}>
             <Form schema={numbersAndWidgets} validator={validator} onSubmit={()=> {alert('submit')}}>
