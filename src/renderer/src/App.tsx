@@ -1,11 +1,12 @@
 import Form from '@rjsf/mui';
 import validator from '@rjsf/validator-ajv8';
 import { numbersAndWidgets } from './sampleSchemas';
-import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs } from '@mui/material';
+import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs, Typography } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import JsonView from '@uiw/react-json-view';
+import ReactJson from '@microlink/react-json-view';
 
 const darkTheme = createTheme({
   palette: {
@@ -53,12 +54,14 @@ const App = () => {
       <CssBaseline />
 
       <Grid container>
-        <Grid item xs={3}>
-          Sidebar (file browser... or?)
+        <Grid item xs={3} >
+          <Typography sx={{ position: 'sticky', top: '0px' }}>
+            Sidebar (file browser... or?)
+          </Typography>
         </Grid>
 
-        <Grid item xs={9}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Grid item xs={9} sx={{borderLeft: 1, borderColor: 'divider'}}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', position: 'sticky', top: '0px', zIndex: 1, bgcolor: 'background.default' }}>
             <Tabs
               value={tab}
               onChange={handleChange}
@@ -70,7 +73,12 @@ const App = () => {
           </Box>
 
           <CustomTabPanel value={tab} index={ViewTab.Schema}>
-            <JsonView value={numbersAndWidgets} />
+            <ReactJson
+              src={numbersAndWidgets}
+              displayObjectSize={false}
+              enableClipboard={false}
+              displayDataTypes={false}
+            />
           </CustomTabPanel>
           <CustomTabPanel value={tab} index={ViewTab.Form}>
             <Form schema={numbersAndWidgets} validator={validator} onSubmit={()=> {alert('submit')}}>
