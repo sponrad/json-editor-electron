@@ -1,3 +1,4 @@
+// import Form from '@rjsf/core';
 import Form from '@rjsf/mui';
 import validator from '@rjsf/validator-ajv8';
 import { numbersAndWidgets } from './sampleSchemas';
@@ -5,7 +6,6 @@ import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs, Typography }
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
-import JsonView from '@uiw/react-json-view';
 import ReactJson from '@microlink/react-json-view';
 
 const darkTheme = createTheme({

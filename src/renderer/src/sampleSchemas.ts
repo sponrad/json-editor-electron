@@ -24,7 +24,7 @@ export const numbersAndWidgets: RJSFSchema = {
     integerRangeSteps: {
       title: "Integer range (by 10)",
       type: "integer",
-      minimum: 55,
+      minimum: 50,
       maximum: 100,
       multipleOf: 10
     },
