@@ -1,13 +1,12 @@
-// import Form from '@rjsf/core';
 import Form from '@rjsf/mui';
 import validator from '@rjsf/validator-ajv8';
-import { numbersAndWidgets } from './sampleSchemas';
 import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import ReactJson from '@microlink/react-json-view';
 import MonacoEditor from '@monaco-editor/react';
+import { useGlobalContext } from './GlobalContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -27,8 +26,6 @@ enum ViewTab {
   Output,
 }
 
-const toJson = (val: unknown) => JSON.stringify(val, null, 2);
-
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -47,8 +44,9 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const App = () => {
   const [tab, setTab] = useState<ViewTab>(ViewTab.Form);
+  const { setSchema, schema } = useGlobalContext();
 
-  const handleChange = (event: React.SyntheticEvent, newTab: ViewTab) => {
+  const handleChange = (_: React.SyntheticEvent, newTab: ViewTab) => {
     setTab(newTab);
   };
 
@@ -67,9 +65,13 @@ const App = () => {
           <Box sx={{height: '100%'}}>
             <MonacoEditor
               language='json'
-              value={toJson(numbersAndWidgets)}
+              value={schema}
               theme='vs-light'
-              onChange={() => {}}
+              onChange={(newSchema) => {
+                if (newSchema) {
+                  setSchema(newSchema)
+                }
+              }}
               height="100%"
               options={{
                 minimap: {
@@ -100,7 +102,7 @@ const App = () => {
           <CustomTabPanel value={tab} index={ViewTab.Form}>
             <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
               <Form
-                schema={numbersAndWidgets}
+                schema={JSON.parse(schema)}
                 validator={validator}
                 onSubmit={()=> {alert('submit')}}
               >
@@ -115,7 +117,7 @@ const App = () => {
           <CustomTabPanel value={tab} index={ViewTab.Output}>
             <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
               <ReactJson
-                src={numbersAndWidgets}
+                src={JSON.parse(schema)}
                 displayObjectSize={false}
                 enableClipboard={false}
                 displayDataTypes={false}
