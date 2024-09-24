@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import ReactJson from '@microlink/react-json-view';
 import MonacoEditor from '@monaco-editor/react';
-import { useGlobalContext } from './GlobalContext';
+import { toJson, useGlobalContext } from './GlobalContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -44,7 +44,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const App = () => {
   const [tab, setTab] = useState<ViewTab>(ViewTab.Form);
-  const { setSchema, schema } = useGlobalContext();
+  const { setSchema, schema, formData, setFormData } = useGlobalContext();
 
   const handleChange = (_: React.SyntheticEvent, newTab: ViewTab) => {
     setTab(newTab);
@@ -100,14 +100,35 @@ const App = () => {
           </Box>
 
           <CustomTabPanel value={tab} index={ViewTab.Form}>
-            <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
+            <Box sx={{
+                overflowY: 'auto',
+                height: 'calc(100vh - 100px)',
+                '.unsupported-field': {
+                  'code': {
+                    padding: '2px 4px',
+                    fontSize: '90%',
+                    color: '#c7254e',
+                    backgroundColor: '#f9f2f4',
+                    borderRadius: 1,
+                  },
+                },
+              }}>
               <Form
                 schema={JSON.parse(schema)}
                 validator={validator}
+                formData={formData ? JSON.parse(formData) : undefined}
+                onChange={(onSubmit, id) => {
+                  setFormData(toJson(onSubmit.formData));
+                  console.log(onSubmit.formData)
+                  console.log(
+                    onSubmit,
+                    id,
+                  );
+                }}
                 onSubmit={()=> {alert('submit')}}
               >
                 <Stack direction="row" gap={2}>
-                  <Button type='submit' variant="contained">Save</Button>
+                  {/* <Button type='submit' variant="contained">Save</Button> */}
                   {/* <Button type='button'>Cancel</Button> */}
                 </Stack>
               </Form>
@@ -117,10 +138,11 @@ const App = () => {
           <CustomTabPanel value={tab} index={ViewTab.Output}>
             <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
               <ReactJson
-                src={JSON.parse(schema)}
+                src={formData ? JSON.parse(formData) : {}}
                 displayObjectSize={false}
                 enableClipboard={false}
                 displayDataTypes={false}
+                name={false}
               />
             </Box>
           </CustomTabPanel>

@@ -8,27 +8,27 @@ import { numbersAndWidgets } from './sampleSchemas';
 interface IGlobalContextProps {
   schema: string;
   setSchema: (newSchema: string) => void;
-  formValues: string;
-  setFormValues: (newFormValues: string) => void;
+  formData: string;
+  setFormData: (newFormData: string) => void;
 }
 
-const toJson = (val: unknown) => JSON.stringify(val, null, 2);
+export const toJson = (val: unknown) => JSON.stringify(val, null, 2);
 
 const GlobalContext = createContext<IGlobalContextProps>({} as IGlobalContextProps);
 GlobalContext.displayName = 'Global Context';
 
 export const GlobalContextProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const [schema, setSchema] = useState<string>(toJson(numbersAndWidgets));
-  const [formValues, setFormValues] = useState<string>('');
+  const [formData, setFormData] = useState<string>('');
 
   const value = useMemo<IGlobalContextProps>(
     () => ({
       schema,
       setSchema,
-      formValues,
-      setFormValues,
+      formData,
+      setFormData,
     }),
-    [schema, formValues],
+    [schema, formData],
   );
 
   return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
