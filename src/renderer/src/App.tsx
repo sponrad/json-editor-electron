@@ -2,11 +2,12 @@
 import Form from '@rjsf/mui';
 import validator from '@rjsf/validator-ajv8';
 import { numbersAndWidgets } from './sampleSchemas';
-import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import ReactJson from '@microlink/react-json-view';
+import MonacoEditor from '@monaco-editor/react';
 
 const darkTheme = createTheme({
   palette: {
@@ -25,6 +26,8 @@ enum ViewTab {
   Form,
   Output,
 }
+
+const toJson = (val: unknown) => JSON.stringify(val, null, 2);
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -54,42 +57,70 @@ const App = () => {
       <CssBaseline />
 
       <Grid container>
-        <Grid item xs={3} >
-          <Typography sx={{ position: 'sticky', top: '0px' }}>
-            Sidebar (file browser... or?)
-          </Typography>
+        <Grid item xs={4} sx={{ height: '100vh' }}>
+          <Stack direction="row" sx={{
+            borderBottom: 1,
+            borderColor: 'divider',
+          }}>
+            <Tab disabled label="Schema" />
+          </Stack>
+          <Box sx={{height: '100%'}}>
+            <MonacoEditor
+              language='json'
+              value={toJson(numbersAndWidgets)}
+              theme='vs-light'
+              onChange={() => {}}
+              height="100%"
+              options={{
+                minimap: {
+                  enabled: false,
+                },
+                automaticLayout: true,
+              }}
+            />
+          </Box>
         </Grid>
 
-        <Grid item xs={9} sx={{borderLeft: 1, borderColor: 'divider'}}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', position: 'sticky', top: '0px', zIndex: 1, bgcolor: 'background.default' }}>
+        <Grid item xs={8} sx={{borderLeft: 1, borderColor: 'divider'}}>
+          <Box sx={{
+            borderBottom: 1,
+            borderColor: 'divider',
+            zIndex: 2,
+            bgcolor: 'background.default',
+            }}>
             <Tabs
               value={tab}
               onChange={handleChange}
             >
-              <Tab value={ViewTab.Schema} label="Schema" />
               <Tab value={ViewTab.Form} label="Form" />
               <Tab value={ViewTab.Output} label="Output JSON" />
             </Tabs>
           </Box>
 
-          <CustomTabPanel value={tab} index={ViewTab.Schema}>
-            <ReactJson
-              src={numbersAndWidgets}
-              displayObjectSize={false}
-              enableClipboard={false}
-              displayDataTypes={false}
-            />
-          </CustomTabPanel>
           <CustomTabPanel value={tab} index={ViewTab.Form}>
-            <Form schema={numbersAndWidgets} validator={validator} onSubmit={()=> {alert('submit')}}>
-              <Stack direction="row" gap={2}>
-                <Button type='submit' variant="contained">Save</Button>
-                {/* <Button type='button'>Cancel</Button> */}
-              </Stack>
-            </Form>
+            <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
+              <Form
+                schema={numbersAndWidgets}
+                validator={validator}
+                onSubmit={()=> {alert('submit')}}
+              >
+                <Stack direction="row" gap={2}>
+                  <Button type='submit' variant="contained">Save</Button>
+                  {/* <Button type='button'>Cancel</Button> */}
+                </Stack>
+              </Form>
+            </Box>
           </CustomTabPanel>
+
           <CustomTabPanel value={tab} index={ViewTab.Output}>
-            Render values from the form with a save button
+            <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
+              <ReactJson
+                src={numbersAndWidgets}
+                displayObjectSize={false}
+                enableClipboard={false}
+                displayDataTypes={false}
+              />
+            </Box>
           </CustomTabPanel>
         </Grid>
       </Grid>

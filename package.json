@@ -13,6 +13,7 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@microlink/react-json-view": "^1.23.1",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.12",
     "@rjsf/core": "^5.20.1",
