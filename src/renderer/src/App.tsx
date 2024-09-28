@@ -1,6 +1,6 @@
 import Form from '@rjsf/mui';
 import validator from '@rjsf/validator-ajv8';
-import { Box, Button, createTheme, Stack, ThemeProvider, Tab, Tabs } from '@mui/material';
+import { Box, createTheme, Stack, ThemeProvider, Tab, Tabs } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
@@ -37,7 +37,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && children}
     </div>
   );
 }
@@ -85,10 +85,10 @@ const App = () => {
 
         <Grid item xs={8} sx={{borderLeft: 1, borderColor: 'divider'}}>
           <Box sx={{
-            borderBottom: 1,
-            borderColor: 'divider',
-            zIndex: 2,
-            bgcolor: 'background.default',
+              borderBottom: 1,
+              borderColor: 'divider',
+              zIndex: 2,
+              bgcolor: 'background.default',
             }}>
             <Tabs
               value={tab}
@@ -101,6 +101,7 @@ const App = () => {
 
           <CustomTabPanel value={tab} index={ViewTab.Form}>
             <Box sx={{
+                px: 3,
                 overflowY: 'auto',
                 height: 'calc(100vh - 100px)',
                 '.unsupported-field': {
@@ -137,12 +138,19 @@ const App = () => {
 
           <CustomTabPanel value={tab} index={ViewTab.Output}>
             <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
-              <ReactJson
-                src={formData ? JSON.parse(formData) : {}}
-                displayObjectSize={false}
-                enableClipboard={false}
-                displayDataTypes={false}
-                name={false}
+              <MonacoEditor
+                language='json'
+                value={formData}
+                theme='vs-light'
+                height="100%"
+                options={{
+                  readOnly: true,
+                  domReadOnly: true,
+                  minimap: {
+                    enabled: false,
+                  },
+                  automaticLayout: true,
+                }}
               />
             </Box>
           </CustomTabPanel>
