@@ -1,6 +1,6 @@
 import Form from '@rjsf/mui';
 import validator from '@rjsf/validator-ajv8';
-import { Box, createTheme, Stack, ThemeProvider, Tab, Tabs } from '@mui/material';
+import { Box, createTheme, Stack, ThemeProvider, Tab, Tabs, Button } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
@@ -137,6 +137,20 @@ const App = () => {
           </CustomTabPanel>
 
           <CustomTabPanel value={tab} index={ViewTab.Output}>
+            <Stack direction="row">
+              <Button
+                onClick={async () => {
+                  await navigator.clipboard.writeText(formData);
+                }}>
+                Copy
+              </Button>
+              <Button
+                onClick={() => {
+                  window.electronAPI.saveFile(formData);
+                }}>
+                Save
+              </Button>
+            </Stack>
             <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
               <MonacoEditor
                 language='json'
