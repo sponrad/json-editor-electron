@@ -2,10 +2,10 @@ import Form from '@rjsf/mui';
 import validator from '@rjsf/validator-ajv8';
 import { Box, createTheme, Stack, ThemeProvider, Tab, Tabs, Button } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Grid from '@mui/material/Grid';
-import ReactJson from '@microlink/react-json-view';
 import MonacoEditor from '@monaco-editor/react';
+import type monaco from 'monaco-editor';
 import { toJson, useGlobalContext } from './GlobalContext';
 
 const darkTheme = createTheme({
@@ -45,6 +45,7 @@ function CustomTabPanel(props: TabPanelProps) {
 const App = () => {
   const [tab, setTab] = useState<ViewTab>(ViewTab.Form);
   const { setSchema, schema, formData, setFormData } = useGlobalContext();
+  const schemaEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
   const handleChange = (_: React.SyntheticEvent, newTab: ViewTab) => {
     setTab(newTab);
@@ -61,15 +62,23 @@ const App = () => {
             borderColor: 'divider',
           }}>
             <Tab disabled label="Schema" />
+            <Button
+              onClick={() => {
+                schemaEditorRef?.current?.getAction('editor.action.formatDocument')?.run();
+              }}
+            >Auto-Format</Button>
           </Stack>
           <Box sx={{height: '100%'}}>
             <MonacoEditor
+              onMount={(editor) => {schemaEditorRef.current = editor;}}
               language='json'
               value={schema}
               theme='vs-light'
               onChange={(newSchema) => {
                 if (newSchema) {
-                  setSchema(newSchema)
+                  // stringify+parse lets json schema errors stay in the editor for fixing
+                  // rather than hard crashing the Form / App
+                  setSchema(JSON.stringify(JSON.parse(newSchema)))
                 }
               }}
               height="100%"
