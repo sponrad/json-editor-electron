@@ -14,9 +14,6 @@
     "appId": "com.devlabtech.jsonschemaeditortool",
     "mac": {
       "target": "dmg"
-    },
-    "win": {
-      "target": "nsis"
     }
   },
   "dependencies": {
