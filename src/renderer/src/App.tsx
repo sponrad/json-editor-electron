@@ -1,87 +1,91 @@
-import { Box, createTheme, ThemeProvider, Tab, Tabs } from '@mui/material';
+import { createTheme, ThemeProvider, useTheme, Stack, ToggleButton } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useState } from 'react';
-import Grid from '@mui/material/Grid';
 import { SchemaEditor } from './components/SchemaEditor';
 import { SchemaForm } from './components/SchemaForm';
 import { JsonOutputViewer } from './components/JsonOutputViewer';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import useLocalStorageState from 'use-local-storage-state'
 
-const darkTheme = createTheme({
+const appTheme = createTheme({
   palette: {
     mode: 'light',
   },
 });
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: ViewTab;
-  value: ViewTab;
-}
-
-enum ViewTab {
-  Schema,
-  Form,
-  Output,
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && children}
-    </div>
-  );
-}
-
 const App = () => {
-  const [tab, setTab] = useState<ViewTab>(ViewTab.Form);
-
-  const handleChange = (_: React.SyntheticEvent, newTab: ViewTab) => {
-    setTab(newTab);
-  };
+  const theme = useTheme();
+  const [showEditor, setShowEditor] = useLocalStorageState('showEditor', {
+    defaultValue: true,
+  });
+  const [showForm, setShowForm] = useLocalStorageState('showForm', {
+    defaultValue: true,
+  });
+  const [showOutput, setShowOutput] = useLocalStorageState('showOutput', {
+    defaultValue: true,
+  });
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={appTheme}>
       <CssBaseline />
 
-      <Grid container>
-        <Grid item xs={4} sx={{ height: '100vh' }}>
-         <SchemaEditor />
-        </Grid>
+      <Stack direction="row" sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          justifyContent: 'center',
+        }}>
+        <ToggleButton
+          value="check"
+          selected={showEditor}
+          onClick={() => setShowEditor(!showEditor)}
+        >
+          Schema
+        </ToggleButton>
+        <ToggleButton
+          value="check"
+          selected={showForm}
+          onClick={() => setShowForm(!showForm)}
+        >
+          Form
+        </ToggleButton>
+        <ToggleButton
+          value="check"
+          selected={showOutput}
+          onClick={() => setShowOutput(!showOutput)}
+        >
+          Output
+        </ToggleButton>
+      </Stack>
 
-        <Grid item xs={8} sx={{borderLeft: 1, borderColor: 'divider'}}>
-          <Box sx={{
-              borderBottom: 1,
-              borderColor: 'divider',
-              zIndex: 2,
-              bgcolor: 'background.default',
-            }}>
-            <Tabs
-              value={tab}
-              onChange={handleChange}
-            >
-              <Tab value={ViewTab.Form} label="Form" />
-              <Tab value={ViewTab.Output} label="Output JSON" />
-            </Tabs>
-          </Box>
+      <PanelGroup direction="horizontal" autoSaveId="persistenceApp">
+        {showEditor &&
+        <>
+          <Panel defaultSize={35} order={1} minSize={20}>
+            <SchemaEditor />
+          </Panel>
+          <PanelResizeHandle
+            style={{width: '2px', backgroundColor: theme.palette.divider}}
+          />
+        </>
+        }
 
-          <CustomTabPanel value={tab} index={ViewTab.Form}>
-            <SchemaForm />
-          </CustomTabPanel>
+        {showForm &&
+        <Panel defaultSize={40} order={2} minSize={20}>
+          <SchemaForm />
+        </Panel>
+        }
 
-          <CustomTabPanel value={tab} index={ViewTab.Output}>
+        {showOutput &&
+        <>
+          <PanelResizeHandle
+            style={{width: '2px', backgroundColor: theme.palette.divider}}
+          />
+
+          <Panel defaultSize={25} order={3} minSize={20}>
             <JsonOutputViewer />
-          </CustomTabPanel>
-        </Grid>
-      </Grid>
-
+          </Panel>
+        </>
+        }
+      </PanelGroup>
     </ThemeProvider>
   )
 };

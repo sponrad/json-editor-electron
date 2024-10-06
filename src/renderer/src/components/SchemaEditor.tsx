@@ -9,16 +9,28 @@ export const SchemaEditor = () => {
     const { setSchema, schema, formData, setFormData } = useGlobalContext();
 
     return (<>
-      <Stack direction="row" sx={{
-        borderBottom: 1,
-        borderColor: 'divider',
-      }}>
+      <Stack
+        direction="row"
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+        }}>
         <Tab disabled label="Schema" />
+        {/*
         <Button
           onClick={() => {
             schemaEditorRef?.current?.getAction('editor.action.formatDocument')?.run();
           }}
-        >Auto-Format</Button>
+        >
+          Auto-Format
+        </Button>
+        */}
+        <Button disabled>
+          Open
+        </Button>
+        <Button disabled>
+          Save
+        </Button>
       </Stack>
       <Box sx={{height: '100%'}}>
         <MonacoEditor
