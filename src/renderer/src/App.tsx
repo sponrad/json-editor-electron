@@ -72,7 +72,7 @@ const App = () => {
             <MonacoEditor
               onMount={(editor) => {schemaEditorRef.current = editor;}}
               language='json'
-              value={schema}
+              defaultValue={schema}
               theme='vs-light'
               onChange={(newSchema) => {
                 if (newSchema) {
@@ -85,9 +85,9 @@ const App = () => {
                   const parsedFormData = JSON.parse(formData);
                   const formDataKeys = Object.keys(parsedFormData);
                   const schemaKeys = Object.keys(JSON.parse(newSchema)?.properties);
-                  const dataKeysNotInSchema = formDataKeys.filter(formDataKey => !schemaKeys.includes(formDataKey))
-                  dataKeysNotInSchema.forEach(deleteKey => delete parsedFormData[deleteKey])
-                  setFormData(JSON.stringify(parsedFormData));
+                  const dataKeysNotInSchema = formDataKeys.filter(formDataKey => !schemaKeys.includes(formDataKey));
+                  dataKeysNotInSchema.forEach(deleteKey => delete parsedFormData[deleteKey]);
+                  setFormData(JSON.stringify(parsedFormData, null, 2));
                 }
               }}
               height="100%"
