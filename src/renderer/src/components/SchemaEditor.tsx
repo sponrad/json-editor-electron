@@ -37,7 +37,7 @@ export const SchemaEditor = () => {
           onMount={(editor) => {schemaEditorRef.current = editor;}}
           language='json'
           defaultValue={schema}
-          theme='vs-light'
+          theme='vs-dark'
           onChange={(newSchema) => {
             if (newSchema) {
               // stringify+parse lets json schema errors stay in the editor for fixing

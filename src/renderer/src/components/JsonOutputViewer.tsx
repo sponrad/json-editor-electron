@@ -34,7 +34,7 @@ export const JsonOutputViewer = () => {
           <MonacoEditor
             language='json'
             value={formData}
-            theme='vs-light'
+            theme='vs-dark'
             height="100%"
             options={{
             readOnly: true,

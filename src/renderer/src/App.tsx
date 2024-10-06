@@ -8,7 +8,7 @@ import useLocalStorageState from 'use-local-storage-state'
 
 const appTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
   },
 });
 
