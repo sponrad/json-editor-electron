@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider, useTheme, Stack, ToggleButton } from '@mui/material';
+import { createTheme, ThemeProvider, Stack, ToggleButton } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { SchemaEditor } from './components/SchemaEditor';
 import { SchemaForm } from './components/SchemaForm';
@@ -13,7 +13,6 @@ const appTheme = createTheme({
 });
 
 const App = () => {
-  const theme = useTheme();
   const [showEditor, setShowEditor] = useLocalStorageState('showEditor', {
     defaultValue: true,
   });
@@ -30,7 +29,7 @@ const App = () => {
 
       <Stack direction="row" sx={{
           borderBottom: 1,
-          borderColor: 'divider',
+          borderColor: '#555',
           justifyContent: 'center',
         }}>
         <ToggleButton
@@ -63,7 +62,7 @@ const App = () => {
             <SchemaEditor />
           </Panel>
           <PanelResizeHandle
-            style={{width: '2px', backgroundColor: theme.palette.divider}}
+            style={{width: '2px', backgroundColor: '#555'}}
           />
         </>
         }
@@ -77,7 +76,7 @@ const App = () => {
         {showOutput &&
         <>
           <PanelResizeHandle
-            style={{width: '2px', backgroundColor: theme.palette.divider}}
+            style={{width: '2px', backgroundColor: '#555'}}
           />
 
           <Panel defaultSize={25} order={3} minSize={20}>

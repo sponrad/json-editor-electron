@@ -37,13 +37,13 @@ export const JsonOutputViewer = () => {
             theme='vs-dark'
             height="100%"
             options={{
-            readOnly: true,
-            domReadOnly: true,
-            minimap: {
-            enabled: false,
-            },
-            automaticLayout: true,
-                    }}
+              readOnly: true,
+              domReadOnly: true,
+              minimap: {
+                enabled: false,
+              },
+              automaticLayout: true,
+            }}
           />
         </Box>
       </>

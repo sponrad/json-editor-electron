@@ -16,7 +16,6 @@ export const SchemaEditor = () => {
           borderColor: 'divider',
         }}>
         <Tab disabled label="Schema" />
-        {/*
         <Button
           onClick={() => {
             schemaEditorRef?.current?.getAction('editor.action.formatDocument')?.run();
@@ -24,7 +23,6 @@ export const SchemaEditor = () => {
         >
           Auto-Format
         </Button>
-        */}
         <Button disabled>
           Open
         </Button>

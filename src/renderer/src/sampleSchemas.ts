@@ -40,12 +40,16 @@ export const numbersAndWidgets: RJSFSchema = {
       items: [
         {
           type: "string",
+          title: "Choose one",
+          description: "does this do anything",
           pattern: "[a-zA-Z\-'\s]+",
+          default: "Jack",
           enum: ["Jack", "Jill"]
         },
         {
           type: "string",
           pattern: "[a-zA-Z\-'\s]+",
+          default: "Bob",
           enum: ["Alice", "Bob"]
         },
       ],

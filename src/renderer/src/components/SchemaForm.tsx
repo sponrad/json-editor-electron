@@ -22,22 +22,22 @@ export const SchemaForm = () => {
             },
             }}>
             <Form
-            schema={JSON.parse(schema)}
-            validator={validator}
-            formData={formData ? JSON.parse(formData) : undefined}
-            onChange={(onSubmit, id) => {
-                setFormData(toJson(onSubmit.formData));
-                console.log(
-                onSubmit,
-                id,
-                );
-            }}
-            onSubmit={()=> {alert('submit')}}
+              schema={JSON.parse(schema)}
+              validator={validator}
+              formData={formData ? JSON.parse(formData) : undefined}
+              onChange={(onSubmit, id) => {
+                  setFormData(toJson(onSubmit.formData));
+                  console.log(
+                  onSubmit,
+                  id,
+                  );
+              }}
+              onSubmit={()=> {alert('submit')}}
             >
-            <Stack direction="row" gap={2}>
-                {/* <Button type='submit' variant="contained">Save</Button> */}
-                {/* <Button type='button'>Cancel</Button> */}
-            </Stack>
+              <Stack direction="row" gap={2}>
+                  {/* <Button type='submit' variant="contained">Save</Button> */}
+                  {/* <Button type='button'>Cancel</Button> */}
+              </Stack>
             </Form>
         </Box>
     );
