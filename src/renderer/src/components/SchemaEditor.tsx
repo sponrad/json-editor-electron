@@ -2,7 +2,7 @@ import { Box, Button, Stack, Tab } from "@mui/material";
 import MonacoEditor from '@monaco-editor/react';
 import { useRef } from "react";
 import type monaco from 'monaco-editor';
-import { useGlobalContext } from "../GlobalContext";
+import { toJson, useGlobalContext } from "../GlobalContext";
 
 export const SchemaEditor = () => {
     const schemaEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -40,7 +40,7 @@ export const SchemaEditor = () => {
             if (newSchema) {
               // stringify+parse lets json schema errors stay in the editor for fixing
               // rather than hard crashing the Form / App
-              setSchema(JSON.stringify(JSON.parse(newSchema)))
+              setSchema(toJson(JSON.parse(newSchema)))
 
               // remove all form data fields that are not in the newSchema
               // TODO move out somewhere nicer
