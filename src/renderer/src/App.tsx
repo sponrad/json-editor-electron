@@ -1,16 +1,9 @@
-import { createTheme, ThemeProvider, Stack, ToggleButton } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ConfigProvider, Space, Switch } from 'antd';
 import { SchemaEditor } from './components/SchemaEditor';
 import { SchemaForm } from './components/SchemaForm';
 import { JsonOutputViewer } from './components/JsonOutputViewer';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import useLocalStorageState from 'use-local-storage-state'
-
-const appTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 
 const App = () => {
   const [showEditor, setShowEditor] = useLocalStorageState('showEditor', {
@@ -24,36 +17,34 @@ const App = () => {
   });
 
   return (
-    <ThemeProvider theme={appTheme}>
-      <CssBaseline />
-
-      <Stack direction="row" sx={{
-          borderBottom: 1,
-          borderColor: '#555',
+    <ConfigProvider>
+      <Space
+        style={{
+          width: '100%',
+          borderBottom: '1px solid #434343',
           justifyContent: 'center',
-        }}>
-        <ToggleButton
-          value="check"
-          selected={showEditor}
-          onClick={() => setShowEditor(!showEditor)}
-        >
-          Schema
-        </ToggleButton>
-        <ToggleButton
-          value="check"
-          selected={showForm}
-          onClick={() => setShowForm(!showForm)}
-        >
-          Form
-        </ToggleButton>
-        <ToggleButton
-          value="check"
-          selected={showOutput}
-          onClick={() => setShowOutput(!showOutput)}
-        >
-          Output
-        </ToggleButton>
-      </Stack>
+          padding: '8px 0',
+        }}
+      >
+        <Switch
+          checked={showEditor}
+          onChange={() => setShowEditor(!showEditor)}
+          checkedChildren="Schema"
+          unCheckedChildren="Schema"
+        />
+        <Switch
+          checked={showForm}
+          onChange={() => setShowForm(!showForm)}
+          checkedChildren="Form"
+          unCheckedChildren="Form"
+        />
+        <Switch
+          checked={showOutput}
+          onChange={() => setShowOutput(!showOutput)}
+          checkedChildren="Output"
+          unCheckedChildren="Output"
+        />
+      </Space>
 
       <PanelGroup direction="horizontal" autoSaveId="persistenceApp">
         {showEditor &&
@@ -62,7 +53,7 @@ const App = () => {
             <SchemaEditor />
           </Panel>
           <PanelResizeHandle
-            style={{width: '2px', backgroundColor: '#555'}}
+            style={{width: '2px', backgroundColor: '#434343'}}
           />
         </>
         }
@@ -76,7 +67,7 @@ const App = () => {
         {showOutput &&
         <>
           <PanelResizeHandle
-            style={{width: '2px', backgroundColor: '#555'}}
+            style={{width: '2px', backgroundColor: '#434343'}}
           />
 
           <Panel defaultSize={25} order={3} minSize={20}>
@@ -85,7 +76,7 @@ const App = () => {
         </>
         }
       </PanelGroup>
-    </ThemeProvider>
+    </ConfigProvider>
   )
 };
 

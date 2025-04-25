@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Tab } from "@mui/material";
+import { Space, Button, Tabs } from "antd";
 import { useGlobalContext } from "../GlobalContext";
 import MonacoEditor from '@monaco-editor/react';
 
@@ -7,13 +7,15 @@ export const JsonOutputViewer = () => {
 
     return (
       <>
-        <Stack
-          direction="row"
-          sx={{
-            borderBottom: 1,
-            borderColor: 'divider',
+        <Space
+          style={{
+            width: '100%',
+            borderBottom: '1px solid #434343',
+            padding: '8px',
           }}>
-          <Tab disabled label="Output" />
+          <Tabs
+            items={[{ key: '1', label: 'Output', disabled: true }]}
+          />
           <Button disabled>
             Open
           </Button>
@@ -29,12 +31,14 @@ export const JsonOutputViewer = () => {
             }}>
             Save
           </Button>
-        </Stack>
-        <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
+        </Space>
+        <div style={{
+          overflowY: 'auto',
+          height: 'calc(100vh - 100px)'
+        }}>
           <MonacoEditor
             language='json'
             value={formData}
-            theme='vs-dark'
             height="100%"
             options={{
               readOnly: true,
@@ -45,7 +49,7 @@ export const JsonOutputViewer = () => {
               automaticLayout: true,
             }}
           />
-        </Box>
+        </div>
       </>
     );
 }
